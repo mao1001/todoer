@@ -75,7 +75,7 @@ Your application will be made up of three (4) different "views". (You can almost
 
 2. A **"completed"** view that lists the tasks that have been completed. Completed tasks should be sorted by creation date (and do not need an alternative sorting method).
 
-    - This view is basically the same as the "master" view, just showing different data! To that end, both views should be different _instances_ of the same `Fragment` class. You can pass a parameter to the fragment's constructor specifying which set of data it should show.
+    - This view is basically the same as the "master" view, just showing different data! To that end, both views should be different _instances_ of the same `Fragment` class. You can pass information to the Fragment about which set of data it should show using `setArguments()` and a `Bundle`.
 
 3. A **"detail"** view for a particular task. Each task will include the following elements:
     - A ___title___, or a short label for the task (e.g., "Call Mom").
@@ -83,7 +83,7 @@ Your application will be made up of three (4) different "views". (You can almost
     - A ___deadline___ for when the task should be completed by (deadlines are great for getting stuff done!)
     - Whether or not the task has been ___completed___.
 
-    This view will also need a way for the user to mark a task as completed or not (e.g., a toggling input control). 
+    This view will also need a way for the user to mark a task as completed or not (e.g., a toggling input control).
 
     You can lay these items out however you want, so long as the content is readable. I suggest making the **deadline** stand out (e.g., a large font). The goal is to make the _user experience_ as pleasant as possible: think about the user stories and how someone would use the app, and try to accommodate them! Use effective organization, labeling, etc.
 
@@ -128,7 +128,7 @@ Overall, the navigation should be _intuitive_ and fluid. The user should be able
 #### A note about interface design
 This is a course in mobile _development_, not _mobile design_. Our concern is primarily with implementation issues. That said, here in the iSchool we care more about the human than we do the machine. Thus we do care about the **user experience** of systems we create, even if that is not our primary focus.
 
-So for this assignment, we're not grading you based on your app's interface in terms of its _visual design_ (e.g., use of colors, fonts, spacing, etc). But we will be grading the interface based on its _navigation design_: that is, how comfortable it is to move back and forth between different tasks and presentations of interaction. 
+So for this assignment, we're not grading you based on your app's interface in terms of its _visual design_ (e.g., use of colors, fonts, spacing, etc). But we will be grading the interface based on its _navigation design_: that is, how comfortable it is to move back and forth between different tasks and presentations of interaction.
 
 The user experience is important! Think about how user will approach your app, and whether they will be able to use it to achieve their goals (as outlines in the user stories above).
 
@@ -140,7 +140,7 @@ There are a lot of steps to create and work with an SQLite Database in Android. 
 
 - You are welcome to look at the `TodoListProvider` code; we will go over how it works with the database later in the course.
 
-- Since this `ContentProvider` is wrapping around a database, it's possible (but **note** required) to inspect that data directly for debugging purposes. See [this link](http://developer.android.com/tools/help/sqlite3.html) for instruction. This requires some familiarity with relational databases, such as if you've taken INFO 340.
+- Since this `ContentProvider` is wrapping around a database, it's possible (but **not** required) to inspect that data directly for debugging purposes. See [this link](http://developer.android.com/tools/help/sqlite3.html) for instruction. This requires some familiarity with relational databases, such as if you've taken INFO 340.
 
 You can access the data in a particular `ContentProvider` by first fetching the <a href="http://developer.android.com/reference/android/content/Context.html#getContentResolver()">`ContentResolver`</a> for the current `Context` (e.g., `Activity`, which you may have to access via `getActivity()` from a Fragment), and then using that resolver's methods to access the specific provider, referenced by its URI (the URI for the `TodoListProvider` is stored in the `TodoListProvider.CONTENT_URI` constant)
 
@@ -155,8 +155,8 @@ You can access the data in a particular `ContentProvider` by first fetching the 
 
 #### Cursors and Loading
 
-The most common interaction we'll have with the database though is __querying__ it for a list of tasks to show. Querying a database will return a [`Cursor`](http://developer.android.com/reference/android/database/Cursor.html). This is a lot like an Iterator in Java; it keeps track of where you are in a list (e.g., what `i` we'd be on in a loop), and then provides methods that let us fetch values from the object at that spot in the list. You can then call methods to move around the list (e.g., to move to the next item). For example:
-    
+The most common interaction we'll have with the database though is __querying__ it for a list of tasks to show. Querying a database will return a [`Cursor`](http://developer.android.com/reference/android/database/Cursor.html). This is a lot like an Iterator in Java; it keeps track of where you are in a list (e.g., what `i` would be on in a loop), and then provides methods that let us fetch values from the object at that spot in the list. You can then call methods to move around the list (e.g., to move to the next item). For example:
+
 ```java
 cursor.moveToFront(); //move to the first item
 String field0 = cursor.getString(0); //get the first field (column you specified) as a String
@@ -174,18 +174,21 @@ In order to easily update your list with new data loaded on a background thread,
 
     - You can then specify what the Loader should _do_ in the `onCreateLoader()` callback. Here you would instantiate and return a `CursorLoader` that queries the `ContentProvider` (e.g., `TodoListProvider`). Note that the third parameter is a "projection", which is just a list of columns you want to get from the data store; you can use the constants from provided `TodoItem` convenience class. **Be sure and include the `ID` field!** The rest of the parameters are the text you'd put in an SQL `SELECT` statement.
 
-  - Finally, in the `onLoadFinished()` callback, you can `swap()` the `Cursor` into your `SimpleCursorAdapter` in order to feed that model data into your controller (for display in the view). See the [guide](http://developer.android.com/guide/components/loaders.html) for more details.
+    - Finally, in the `onLoadFinished()` callback, you can `swap()` the `Cursor` into your `SimpleCursorAdapter` in order to feed that model data into your controller (for display in the view). See the [guide](http://developer.android.com/guide/components/loaders.html) for more details.
+
+        - In the `onLoaderReset()` callback just swap in `null` for our Cursor, since there now is no content (it is "reset").
 
 - In order to actually _start_ your background activity, use the `getLoaderManager().initLoader(...)` method. This is similar in flavor to the `AsyncTask.execute()` method we've used before. Note that you can use the `.restartLoader()` method to "recreate" the `CursorLoader`, like if you want to change the arguments passed to it (e.g., you want to **sort tasks differently**).
 
-    - The second parameter to the `initLoader()` method is an id number for _which cursor you want to load_, and is passed in as the first param to `onCreateLoader()` (or is accessible via `Loader#getId()`). You can then use an `if` statement to determine which cursor you want to load: for example, if you want to load one that is sorted in a different way!
+    - The first parameter to the `initLoader()` method is an id number for _which cursor you want to load_, and is passed in as the first param to `onCreateLoader()` (or is accessible via `Loader#getId()`). You can then use an `if` statement to determine which cursor you want to load: for example, if you want to load one that is sorted in a different way!
 
-    - To be even more explicit: if you have your "Sort" menu buttons specify an instance variable, 
+    - Alternatively (and more easily): if you have your "Sort" menu buttons specify an instance variable, you can use that to determine the parameters to the `CursorAdapter` you instantiate, thereby loading in a new set of data.
+
 
 #### ViewBinding
 The other thing to note about the `SimpleCursorAdapter` is that---like `ArrayAdapter`, it "simply" takes the text content from the database and feeds it directly into a `TextView`. However, sometimes you'll want to dynamically modify the data that is shown: for example, the dates in the database are stored as numbers (milliseconds since [epoch](https://en.wikipedia.org/wiki/Unix_time)); but you should display them as human-readable text (e.g., `"Jun 01 2016, 1:30pm"`).
 
-In order to easily add logic to convert this data from one format to another before being displayed, you can use a [ViewBinder](http://developer.android.com/reference/android/widget/SimpleCursorAdapter.ViewBinder.html). This class acts as "decorator", and adds a callback that gets executed by the adapter as part of that adapting process. 
+In order to easily add logic to convert this data from one format to another before being displayed, you can use a [ViewBinder](http://developer.android.com/reference/android/widget/SimpleCursorAdapter.ViewBinder.html). This class acts as "decorator", and adds a callback that gets executed by the adapter as part of that adapting process.
 
 You assign a `ViewBinder` to the adapter, and then in the `setViewValue()` callback you can specify how to modify the `View` based on the current `Cursor` and its position. For example:
 
@@ -197,7 +200,7 @@ myAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
         if(columnIndex == cursor.getColumnIndex(TodoItem.DEADLINE) ){
 
             /*format String here*/
-            
+
             ((TextView)view).setText(formattedString); //assign that String to the View
             return true; //return that we've handled this one
         }
@@ -215,7 +218,7 @@ Working with Dates can be a bit tricky in Java, as there are lots of related cla
 These methods takes in [`ContentValues`](http://developer.android.com/reference/android/content/ContentValues.html) objects as parameters. These are basically HashMaps you can store values in. Use the `.put()` method to specify a key and value, where the key should be a database field (e.g., one of the constants from `TodoItem`).
 
 Note that for adding a new task with a specified deadline, you will need to convert from some kind of date object (such as a [`Calendar`](http://developer.android.com/reference/java/util/Calendar.html)) to a `long`. The `Calendar#getTimeInMillis()` method could help.
- 
+
 
 
 ## Extra Feature: Portrait Mode
