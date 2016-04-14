@@ -105,15 +105,15 @@ In __landscape__ orientation, your app will use a "two-pane" layout: that is, it
 
 - When the user clicks on any of the items in the "master list" view, the list should move to the _left pane_ (if it is not there already) and the _right pane_ should show the "details" view for the selected task.
 
-  - Use [FragmentTransactions](http://developer.android.com/guide/components/fragments.html#Transactions) to change what fragments are displayed.
+    - Use [FragmentTransactions](http://developer.android.com/guide/components/fragments.html#Transactions) to change what fragments are displayed.
 
-  - The user should be able to use the [_up navigation_](http://developer.android.com/training/implementing-navigation/temporal.html#back-fragments) (either clicking the "back" button or using a back icon in the [ActionBar](http://developer.android.com/guide/topics/ui/actionbar.html)) to return to the "master and add" fragment layout.
-
-    - Be careful with what gets added to the back stack! The user should not click through repeated "master + add" views before backing out of the program.
+    - The user should be able to use the [_up navigation_](http://developer.android.com/training/implementing-navigation/temporal.html#back-fragments) (either clicking the "back" button or using a back icon in the [ActionBar](http://developer.android.com/guide/topics/ui/actionbar.html)) to return to the "master and add" fragment layout.
 
 - From any screen, the user should be able to select an item from the [options menu](http://developer.android.com/guide/topics/ui/menus.html#options-menu) (e.g., "Add Task") to view the "add" view in the _right pane_ (the _left pane_ should remain the same).
 
-    - After adding the event, the user should be <a href="http://developer.android.com/reference/android/app/FragmentManager.html#popBackStack()">taken back</a> to their previous layout (unless they are at the starting layout)
+    - After adding the event, the user should be <a href="http://developer.android.com/reference/android/app/FragmentManager.html#popBackStack()">taken back</a> to their previous layout (<a href="http://developer.android.com/reference/android/app/FragmentManager.html#getBackStackEntryCount()">unless</a> they are at the starting layout).
+    
+    - Note about "popping" items off the back stack: you can use this as a way of "navigating" between elements--rather than committing a new transaction to change the layout, you can "reverse" a previous transaction to change the layout.
 
 - From any screen, the user should be able to select an item from the options menu (e.g., "Show Completed"). This should show the "completed" view in the ___right pane___ (the "master" view should remain in the _left pane_).
 
