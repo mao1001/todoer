@@ -107,7 +107,7 @@ In __landscape__ orientation, your app will use a "two-pane" layout: that is, it
 
     - Use [FragmentTransactions](http://developer.android.com/guide/components/fragments.html#Transactions) to change what fragments are displayed.
 
-    - The user should be able to use the [_up navigation_](http://developer.android.com/training/implementing-navigation/temporal.html#back-fragments) (either clicking the "back" button or using a back icon in the [ActionBar](http://developer.android.com/guide/topics/ui/actionbar.html)) to return to the "master and add" fragment layout.
+    - The user should be able to use the [_up navigation_](http://developer.android.com/training/implementing-navigation/temporal.html#back-fragments) (either clicking the "back" button or using a back icon in the [ActionBar](http://developer.android.com/guide/topics/ui/actionbar.html)) to return to the previous fragment layout (e.g., "master and add" from when the app starts).
 
 - From any screen, the user should be able to select an item from the [options menu](http://developer.android.com/guide/topics/ui/menus.html#options-menu) (e.g., "Add Task") to view the "add" view in the _right pane_ (the _left pane_ should remain the same).
 
@@ -228,24 +228,17 @@ By developing your application using Fragments, it becomes very easy to [re-use 
 
 In **portrait mode**, the app should be displayed with a single pane (e.g., a single fragment shown at a time in one Activity). Your app should support the following interaction:
 
-- The app should start the user on the "master list" view. Clicking on any of the items in the list view should take the user to the "details" view screen for that item. The user should be able to use up navigation to return to the master list.
+- The app should start the user on the "master list" view. Clicking on any of the items in the list view should take the user to the "details" view screen for that item. The user should be able to use up navigation to return to the previous view.
 
 - From any screen, the user should be able to select an item from the options menu to add a task. This should take the user to the "add" view.
 
-    - After adding the task, the user should be taken to the "detail" view for that task. Navigating back from their should take the the user to whatever view was shown before they added an item.
+    - After adding the task, the user should be taken to the "detail" view for that task. Navigating back from there should take the the user to whatever view was shown before they added an item (not back to the "add" task).
 
 - From any screen, the user should be able to select an item from the options menu (e.g., "Show Completed"). This should show the "completed" view
 
 - When the user clicks on any of the items in the "completed" view. Clicking on any of the items in this list view should take the user to the "details" view screen for that item.
 
 - From any screen, the user should be able to select an item from the options menu (e.g., "Show To Do"). This should show the "master" view list.
-
-
-  - From the "master list", the user should be able to click an "add event" button. This should take the user to the "recording" view. Once the user has recorded an observation, the user should be taken to the "details" view for that observation. From there the user should be able to use up navigation (e.g., from the `ActionBar`) to return to the "master list".
-
-    - This is different than the pop-up dialog used in the landscape mode!
-
-  - From the "master list", the user should also be able to click on a "see summary" button. This should take the user to the "summary" view (and again, the user can navigate back to the list). Note that this button is not present in landscape mode; think about how you can best structure and re-use your layouts!
 
 Again, the goal is for the app usage "flow" to be as smooth and intuitive as possible.
 
