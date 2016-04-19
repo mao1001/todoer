@@ -1,11 +1,13 @@
 package edu.uw.mao1001.todoer;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,12 +18,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        View right = findViewById(R.id.rightPane);
 
-        TaskListFragment fragment = (TaskListFragment)getSupportFragmentManager().findFragmentByTag("TaskListFragment");
-        fragment = new TaskListFragment();
+
+        Fragment fragment = new TaskListFragment();
+        int targetId;
+        if (right == null) {
+            //we are in landscape
+            targetId = R.id.container;
+        } else {
+            targetId = R.id.leftPane;
+        }
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, fragment, "TaskListFragment");
+        ft.replace(targetId, fragment, "TaskListFragment");
         ft.commit();
     }
 

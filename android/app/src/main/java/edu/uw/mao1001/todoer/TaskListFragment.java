@@ -33,7 +33,6 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         //Required blank constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_task_list, container, false);
