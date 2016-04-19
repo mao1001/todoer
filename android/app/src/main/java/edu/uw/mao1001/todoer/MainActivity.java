@@ -17,8 +17,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-
         TaskListFragment fragment = (TaskListFragment)getSupportFragmentManager().findFragmentByTag("TaskListFragment");
         fragment = new TaskListFragment();
 
