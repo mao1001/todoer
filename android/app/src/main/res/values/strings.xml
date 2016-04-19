@@ -5,4 +5,8 @@
 
     <string name="action_new_task_lbl">New Task</string>
     <string name="action_sort">Sort</string>
+
+
+    <string name="title_hint">Title</string>
+    <string name="detail_hint">Details</string>
 </resources>
