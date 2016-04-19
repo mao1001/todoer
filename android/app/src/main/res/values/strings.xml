@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Todoer</string>
 
+    <string name="placeholder">Placeholder</string>
+
     <string name="action_new_task_lbl">New Task</string>
     <string name="action_sort">Sort</string>
 </resources>

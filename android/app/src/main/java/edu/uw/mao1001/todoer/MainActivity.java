@@ -7,29 +7,31 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static boolean landscape;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View right = findViewById(R.id.rightPane);
+        //Attempts to find right_pane
+        landscape = findViewById(R.id.right_pane) != null;
 
-
-        Fragment fragment = new TaskListFragment();
         int targetId;
-        if (right == null) {
-            //we are in landscape
-            targetId = R.id.container;
+        if (landscape) {
+            //We are in landscape
+            targetId = R.id.left_pane;
         } else {
-            targetId = R.id.leftPane;
+            targetId = R.id.container;
         }
 
+        //Instantiate the main task list.
+        Fragment fragment = new TaskListFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(targetId, fragment, "TaskListFragment");
         ft.commit();
@@ -37,10 +39,37 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.v(TAG,"onCreateOptionsMenu");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.task_list_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "Clicked: " + item.toString());
+
+        switch (item.toString()) {
+            case "New Task":
+                launchNewTask();
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void launchNewTask() {
+        int targetId;
+        if (landscape) {
+            targetId = R.id.right_pane;
+        } else {
+            targetId = R.id.container;
+        }
+
+        Fragment fragment = new NewTaskFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(targetId, fragment, "NewTaskFragment");
+        ft.commit();
     }
 }
 
