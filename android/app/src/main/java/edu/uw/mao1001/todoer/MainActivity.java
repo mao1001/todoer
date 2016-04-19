@@ -1,14 +1,11 @@
 package edu.uw.mao1001.todoer;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-
-import edu.uw.todoer.provider.TodoListProvider;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,12 +18,21 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         TaskListFragment fragment = (TaskListFragment)getSupportFragmentManager().findFragmentByTag("TaskListFragment");
         fragment = new TaskListFragment();
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.container, fragment, "TaskListFragment");
         ft.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.v(TAG,"onCreateOptionsMenu");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.task_list_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
 
