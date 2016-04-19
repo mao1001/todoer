@@ -9,4 +9,5 @@
 
     <string name="title_hint">Title</string>
     <string name="detail_hint">Details</string>
+    <string name="deadline_label">Due on</string>
 </resources>

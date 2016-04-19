@@ -15,12 +15,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Nick on 4/19/2016.
  */
 public class NewTaskFragment extends Fragment {
     private static final String TAG = "NewTaskFragment";
+
+
+
     static final int DIALOG_ID = 0;
 
     public NewTaskFragment() {
@@ -31,8 +35,22 @@ public class NewTaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_new_task, container, false);
 
+        initializeDatePicker(rootView);
+
+
+        return rootView;
+    }
+
+    private void initializeDatePicker(View rootView) {
         TextView editText = (TextView)rootView.findViewById(R.id.input_deadline);
 
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        String result = "Year: " + year + " Month: " + month + " Day:" + day;
+
+        editText.setText(result);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,9 +58,7 @@ public class NewTaskFragment extends Fragment {
                 newFragment.show(getActivity().getFragmentManager(), "datePicker");
             }
         });
-
-
-        return rootView;
     }
+
 }
 
