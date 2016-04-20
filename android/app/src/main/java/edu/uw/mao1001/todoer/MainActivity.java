@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,10 +61,13 @@ public class MainActivity extends AppCompatActivity {
             case "New Task":
                 launchNewTask();
                 break;
+            case "By create date":
+                Log.v(TAG, "Clicked on: " + item.getTitle());
+                break;
+            case "By due date":
+                Log.v(TAG, "Clicked on: " + item.getTitle());
+                break;
         }
-
-
-
         return super.onOptionsItemSelected(item);
     }
 

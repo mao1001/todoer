@@ -5,6 +5,9 @@
 
     <string name="action_new_task_label">New Task</string>
     <string name="action_sort_label">Sort</string>
+
+    <string name="action_sort_by_creation">By create date</string>
+    <string name="action_sort_by_due">By due date</string>
     
     <string name="button_save_task_label">Save</string>
     <string name="button_cancel_label">Cancel</string>

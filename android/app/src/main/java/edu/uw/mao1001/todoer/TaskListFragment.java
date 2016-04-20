@@ -55,14 +55,14 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 if (columnIndex == cursor.getColumnIndex(TodoItem.TITLE)) {
 
-                    Log.v(TAG, "This is ID: " + cursor.getString(columnIndex - 1));
+                    //Log.v(TAG, "This is ID: " + cursor.getString(columnIndex - 1));
 
                     TextView titleView = (TextView)view.findViewById(R.id.list_title);
                     titleView.setText(cursor.getString(columnIndex));
 
                     String statusText = cursor.getString(columnIndex + 3);
-                    Log.v(TAG, cursor.getString(columnIndex + 2));
-                    Log.v(TAG, cursor.getString(columnIndex + 3));
+                    //Log.v(TAG, cursor.getString(columnIndex + 2));
+                    //Log.v(TAG, cursor.getString(columnIndex + 3));
 
                     TextView statusView = (TextView)view.findViewById(R.id.list_status);
                     if (statusText.equals("0")) {
