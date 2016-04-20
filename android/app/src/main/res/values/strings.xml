@@ -3,9 +3,11 @@
 
     <string name="placeholder">Placeholder</string>
 
-    <string name="action_new_task_lbl">New Task</string>
-    <string name="action_sort">Sort</string>
-
+    <string name="action_new_task_label">New Task</string>
+    <string name="action_sort_label">Sort</string>
+    
+    <string name="button_save_task_label">Save</string>
+    <string name="button_cancel_label">Cancel</string>
 
     <string name="title_hint">Title</string>
     <string name="detail_hint">Details</string>

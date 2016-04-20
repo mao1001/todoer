@@ -7,7 +7,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,8 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_task_list, container, false);
 
+        getActivity().setTitle("Task List");
+
         //controller
         AdapterView listView = (AdapterView)rootView.findViewById(R.id.taskListView);
 
@@ -55,6 +56,8 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
 
             }
         });
+
+
 
         return rootView;
     }

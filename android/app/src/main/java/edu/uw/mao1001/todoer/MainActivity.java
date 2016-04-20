@@ -22,17 +22,25 @@ public class MainActivity extends AppCompatActivity {
         //Attempts to find right_pane
         landscape = findViewById(R.id.right_pane) != null;
 
+        Fragment fragment = new TaskListFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
         int targetId;
         if (landscape) {
             //We are in landscape
+            Fragment rightFragment = new NewTaskFragment();
+
             targetId = R.id.left_pane;
+
+            ft.replace(R.id.right_pane, rightFragment, "NewTaskFragment");
         } else {
             targetId = R.id.container;
         }
 
+        Log.v(TAG, "" + targetId);
+
         //Instantiate the main task list.
-        Fragment fragment = new TaskListFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
         ft.replace(targetId, fragment, "TaskListFragment");
         ft.commit();
     }
@@ -55,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -73,28 +82,6 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-//    ContentValues newValues = new ContentValues();
-//newValues.put(TodoListProvider.TaskEntry.COL_TITLE, "This is a test title");
-//        newValues.put(TodoListProvider.TaskEntry.COL_DETAILS, "These are some details");
-//
-//
-//        Uri newUri = getContentResolver().insert(
-//        TodoListProvider.CONTENT_URI,
-//        newValues
-//        );
-//
-//
-//        Log.d(TAG, "Item inserted");
-//
-//
-//        String[] projection = {TodoListProvider.TaskEntry.COL_TITLE, TodoListProvider.TaskEntry.COL_DETAILS};
-//        Cursor cursor = getContentResolver().query(TodoListProvider.CONTENT_URI, projection, null, null, null);
-//        cursor.moveToFirst();
-//
-//        String name = cursor.getString(cursor.getColumnIndexOrThrow(TodoListProvider.TaskEntry.COL_TITLE));
-//        //String field0 = cursor.getString(0);
-//        //String field1 = cursor.getString(1);
-//
-//        Log.d(TAG, name);
+
 
 
