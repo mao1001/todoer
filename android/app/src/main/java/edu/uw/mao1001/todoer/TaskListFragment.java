@@ -55,6 +55,8 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 if (columnIndex == cursor.getColumnIndex(TodoItem.TITLE)) {
 
+                    Log.v(TAG, "This is ID: " + cursor.getString(columnIndex - 1));
+
                     TextView titleView = (TextView)view.findViewById(R.id.list_title);
                     titleView.setText(cursor.getString(columnIndex));
 
@@ -87,7 +89,9 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                moveToDetailView();
+//                String title = ((TextView)view.findViewById(R.id.list_title)).getText().toString();
+//                //String
+//                moveToDetailView(view);
             }
         });
 
@@ -96,19 +100,21 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         return rootView;
     }
 
-    private void moveToDetailView() {
-        int parentId = ((ViewGroup)getView().getParent()).getId();
-        Fragment fragment = new DetailFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        int targetId;
-        if (parentId == R.id.container) {
-            targetId = R.id.container;
-        } else {
-            targetId = R.id.right_pane;
-        }
-
-        ft.replace(targetId, fragment, "DetailFragment").commit();
-    }
+//    private void moveToDetailView(View view) {
+//        int parentId = ((ViewGroup)getView().getParent()).getId();
+//        Fragment fragment = new DetailFragment();
+//        Bundle extras = new Bundle();
+//        //extras.putString("title");
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        int targetId;
+//        if (parentId == R.id.container) {
+//            targetId = R.id.container;
+//        } else {
+//            targetId = R.id.right_pane;
+//        }
+//
+//        ft.replace(targetId, fragment, "DetailFragment").commit();
+//    }
 
 
     //-------------------------------------//
