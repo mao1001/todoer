@@ -119,7 +119,7 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         Log.v(TAG, "" + id);
         if (id == R.id.container) {
             //If in portrait. Replace self with the task list again
-            Fragment fragment = new TaskListFragment();
+            Fragment fragment = TaskListFragment.newInstance("");
             getFragmentManager().beginTransaction().replace(R.id.container, fragment, "TaskListFragment").commit();
         } else if (id == R.id.right_pane) {
             //If in landscape. Reset the fields.

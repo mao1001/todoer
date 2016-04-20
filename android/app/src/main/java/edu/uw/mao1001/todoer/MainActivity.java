@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import edu.uw.todoer.provider.TodoItem;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         //Attempts to find right_pane
         landscape = findViewById(R.id.right_pane) != null;
 
-        Fragment fragment = new TaskListFragment();
+        Fragment fragment = TaskListFragment.newInstance("");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         int targetId;
@@ -55,20 +57,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "Clicked: " + item.toString());
-
         switch (item.toString()) {
             case "New Task":
                 launchNewTask();
                 break;
             case "By create date":
-                Log.v(TAG, "Clicked on: " + item.getTitle());
+                resortData(TodoItem.TIME_CREATED + " ASC");
                 break;
             case "By due date":
-                Log.v(TAG, "Clicked on: " + item.getTitle());
+                resortData(TodoItem.DEADLINE + " DESC");
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void resortData(String orderBy) {
+        TaskListFragment fragment = ((TaskListFragment)getSupportFragmentManager().findFragmentByTag("TaskListFragment"));
+        fragment.reloadDate(orderBy);
     }
 
     private void launchNewTask() {

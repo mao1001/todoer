@@ -27,11 +27,20 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final String TAG = "TaskListFragment";
 
+    String orderBy;
+
     private SimpleCursorAdapter adapter;
 
     public TaskListFragment() {
         //Required blank constructor
     }
+
+    public static TaskListFragment newInstance(String orderBy) {
+        TaskListFragment fragment = new TaskListFragment();
+        fragment.orderBy = orderBy;
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,7 +94,6 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
 
         getLoaderManager().initLoader(0, null, this);
 
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -98,6 +106,11 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
 
 
         return rootView;
+    }
+
+    public void reloadDate(String orderBy) {
+        this.orderBy = orderBy;
+        getLoaderManager().restartLoader(0, null, this);
     }
 
 //    private void moveToDetailView(View view) {
@@ -139,7 +152,7 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
                 projection,
                 null,
                 null,
-                null
+                orderBy
         );
         return loader;
     }
