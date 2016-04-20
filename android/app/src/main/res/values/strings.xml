@@ -8,6 +8,8 @@
     
     <string name="button_save_task_label">Save</string>
     <string name="button_cancel_label">Cancel</string>
+    <string name="button_delete_task_label">Delete</string>
+    <string name="button_complete_task_label">Complete</string>
 
     <string name="title_hint">Title</string>
     <string name="detail_hint">Details</string>

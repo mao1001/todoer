@@ -3,6 +3,7 @@ package edu.uw.mao1001.todoer;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -52,8 +53,7 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //navigate to detail fragment.
-
+                moveToDetailView();
             }
         });
 
@@ -61,6 +61,21 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
 
         return rootView;
     }
+
+    private void moveToDetailView() {
+        int parentId = ((ViewGroup)getView().getParent()).getId();
+        Fragment fragment = new DetailFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        int targetId;
+        if (parentId == R.id.container) {
+            targetId = R.id.container;
+        } else {
+            targetId = R.id.right_pane;
+        }
+
+        ft.replace(targetId, fragment, "DetailFragment").commit();
+    }
+
 
     //-------------------------------------//
     //   L O A D E R   O V E R R I D E S   //
