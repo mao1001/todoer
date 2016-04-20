@@ -8,10 +8,15 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import edu.uw.todoer.provider.TodoItem;
 import edu.uw.todoer.provider.TodoListProvider;
 
@@ -44,6 +49,35 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
                 new String[] {TodoItem.TITLE},
                 new int[] {R.id.txtItem},
                 0);
+
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                if (columnIndex == cursor.getColumnIndex(TodoItem.TITLE)) {
+
+                    TextView titleView = (TextView)view.findViewById(R.id.list_title);
+                    titleView.setText(cursor.getString(columnIndex));
+
+                    String statusText = cursor.getString(columnIndex + 3);
+                    Log.v(TAG, cursor.getString(columnIndex + 2));
+                    Log.v(TAG, cursor.getString(columnIndex + 3));
+
+                    TextView statusView = (TextView)view.findViewById(R.id.list_status);
+                    if (statusText.equals("0")) {
+                        statusText = cursor.getString(columnIndex + 2);
+                        statusView.setText(getString(R.string.status_due_label));
+                    } else {
+                        statusView.setText(getString(R.string.status_completed_label));
+                    }
+
+                    TextView dateView = (TextView)view.findViewById(R.id.list_date);
+                    dateView.setText(statusText);
+
+                }
+
+                return true;
+            }
+        });
 
         listView.setAdapter(adapter);
 
