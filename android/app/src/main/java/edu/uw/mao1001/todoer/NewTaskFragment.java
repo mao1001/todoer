@@ -74,11 +74,11 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         String detail = detailField.getText().toString();
 
         if (detail.equals("") || title.equals("")) {
-            Log.v(TAG, "Fields cannot be empty");
+//            Log.v(TAG, "Fields cannot be empty");
         } else {
-            Log.v(TAG, "Title  : " + title);
-            Log.v(TAG, "Detail : " + detail);
-            Log.v(TAG, "Date   : " + getFormattedDate(deadline));
+//            Log.v(TAG, "Title  : " + title);
+//            Log.v(TAG, "Detail : " + detail);
+//            Log.v(TAG, "Date   : " + getFormattedDate(deadline));
             saveTask(title, detail, getFormattedDate(deadline));
         }
     }

@@ -97,9 +97,7 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String title = ((TextView)view.findViewById(R.id.list_title)).getText().toString();
-//                //String
-//                moveToDetailView(view);
+                moveToDetailView(id);
             }
         });
 
@@ -113,21 +111,20 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         getLoaderManager().restartLoader(0, null, this);
     }
 
-//    private void moveToDetailView(View view) {
-//        int parentId = ((ViewGroup)getView().getParent()).getId();
-//        Fragment fragment = new DetailFragment();
-//        Bundle extras = new Bundle();
-//        //extras.putString("title");
-//        FragmentTransaction ft = getFragmentManager().beginTransaction();
-//        int targetId;
-//        if (parentId == R.id.container) {
-//            targetId = R.id.container;
-//        } else {
-//            targetId = R.id.right_pane;
-//        }
-//
-//        ft.replace(targetId, fragment, "DetailFragment").commit();
-//    }
+    private void moveToDetailView(long id) {
+        int parentId = ((ViewGroup)getView().getParent()).getId();
+        Fragment fragment = DetailFragment.newInstance(id);
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        int targetId;
+        if (parentId == R.id.container) {
+            targetId = R.id.container;
+        } else {
+            targetId = R.id.right_pane;
+        }
+
+        ft.replace(targetId, fragment, "DetailFragment").commit();
+    }
 
 
     //-------------------------------------//
