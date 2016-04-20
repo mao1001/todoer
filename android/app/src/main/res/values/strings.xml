@@ -16,8 +16,8 @@
 
     <string name="title_hint">Title</string>
     <string name="detail_hint">Details</string>
-    <string name="deadline_label">Due on</string>
 
     <string name="status_due_label">Due on:</string>
     <string name="status_completed_label">Completed on:</string>
+    <string name="status_incomplete">Not yet completed</string>
 </resources>

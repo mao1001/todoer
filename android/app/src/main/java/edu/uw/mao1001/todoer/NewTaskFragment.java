@@ -79,7 +79,7 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
 //            Log.v(TAG, "Title  : " + title);
 //            Log.v(TAG, "Detail : " + detail);
 //            Log.v(TAG, "Date   : " + getFormattedDate(deadline));
-            saveTask(title, detail, getFormattedDate(deadline));
+            saveTask(title, detail, TodoItem.getFormattedDate(deadline));
         }
     }
 
@@ -91,7 +91,7 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         newValues.put(TodoListProvider.TaskEntry.COL_TITLE, title);
         newValues.put(TodoListProvider.TaskEntry.COL_DETAILS, detail);
         newValues.put(TodoListProvider.TaskEntry.COL_DEADLINE, deadline);
-        newValues.put(TodoListProvider.TaskEntry.COL_TIME_CREATED, getFormattedDate(created));
+        newValues.put(TodoListProvider.TaskEntry.COL_TIME_CREATED, TodoItem.getFormattedDate(created));
 
 
         getActivity().getContentResolver().insert(
@@ -137,7 +137,7 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
     private void initializeDatePicker(View rootView) {
         deadlineField = (TextView)rootView.findViewById(R.id.input_deadline);
 
-        deadlineField.setText(getFormattedDate(deadline));
+        deadlineField.setText(TodoItem.getFormattedDate(deadline));
 
         deadlineField.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,12 +152,7 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         deadline.set(year, monthOfYear, dayOfMonth);
-        deadlineField.setText(getFormattedDate(deadline));
-    }
-
-
-    private String getFormattedDate(Calendar date) {
-        return new SimpleDateFormat("EEE, MMM d, y").format(date.getTime());
+        deadlineField.setText(TodoItem.getFormattedDate(deadline));
     }
 }
 
