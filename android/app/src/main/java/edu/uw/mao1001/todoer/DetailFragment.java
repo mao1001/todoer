@@ -31,11 +31,11 @@ public class DetailFragment extends Fragment {
     private String deadline;
     private String completed;
 
-    long ID;
+    private String ID;
 
     public DetailFragment() {}
 
-    public static DetailFragment newInstance(long id) {
+    public static DetailFragment newInstance(String id) {
         DetailFragment fragment = new DetailFragment();
         fragment.ID = id;
         return fragment;
@@ -47,7 +47,7 @@ public class DetailFragment extends Fragment {
         getActivity().setTitle("Task Detail");
 
         if (savedInstanceState != null) {
-            ID = savedInstanceState.getLong("id");
+            ID = savedInstanceState.getString("id");
         }
 
         fetchData();
@@ -59,7 +59,7 @@ public class DetailFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putLong("id", ID);
+        outState.putString("id", ID);
         super.onSaveInstanceState(outState);
     }
 
@@ -118,8 +118,8 @@ public class DetailFragment extends Fragment {
             Fragment fragment = TaskListFragment.newInstance(getContext());
             getFragmentManager().beginTransaction().replace(R.id.container, fragment, "TaskListFragment").commit();
         } else if (id == R.id.right_pane) {
-            Fragment fragment = TaskListFragment.newInstance(getContext());
-            getFragmentManager().beginTransaction().replace(R.id.right_pane, fragment, "TaskListFragment").commit();
+            Fragment fragment = new NewTaskFragment();
+            getFragmentManager().beginTransaction().replace(R.id.right_pane, fragment, "NewTaskFragment").commit();
         }
     }
 

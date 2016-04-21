@@ -110,7 +110,7 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                moveToDetailView(id);
+                moveToDetailView("" + id);
             }
         });
 
@@ -124,7 +124,7 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         getLoaderManager().restartLoader(0, null, this);
     }
 
-    private void moveToDetailView(long id) {
+    private void moveToDetailView(String id) {
         int parentId = ((ViewGroup)getView().getParent()).getId();
         Fragment fragment = DetailFragment.newInstance(id);
 

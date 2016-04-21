@@ -51,15 +51,6 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
             }
         });
 
-//        Button btn2 = (Button)rootView.findViewById(R.id.cancel_button);
-//        btn2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                cancel();
-//            }
-//        });
-
-
         deadline = Calendar.getInstance();
         initializeDatePicker(rootView);
 
@@ -74,11 +65,7 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         String detail = detailField.getText().toString();
 
         if (detail.equals("") || title.equals("")) {
-//            Log.v(TAG, "Fields cannot be empty");
         } else {
-//            Log.v(TAG, "Title  : " + title);
-//            Log.v(TAG, "Detail : " + detail);
-//            Log.v(TAG, "Date   : " + getFormattedDate(deadline));
             saveTask(title, detail, TodoItem.getFormattedDate(deadline));
         }
     }
@@ -94,43 +81,26 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         newValues.put(TodoListProvider.TaskEntry.COL_TIME_CREATED, TodoItem.getFormattedDate(created));
 
 
-        getActivity().getContentResolver().insert(
+        Uri uri = getActivity().getContentResolver().insert(
                 TodoListProvider.CONTENT_URI,
                 newValues
         );
-        Log.d(TAG, "Item inserted");
 
-        //cancel();
-
-//
-//        String[] projection = {TodoListProvider.TaskEntry.COL_TITLE, TodoListProvider.TaskEntry.COL_DETAILS};
-//        Cursor cursor = getActivity().getContentResolver().query(TodoListProvider.CONTENT_URI, projection, null, null, null);
-//        cursor.moveToFirst();
-//
-//        String name = cursor.getString(cursor.getColumnIndexOrThrow(TodoListProvider.TaskEntry.COL_TITLE));
-//        //String field0 = cursor.getString(0);
-//        //String field1 = cursor.getString(1);
-//
-//        Log.d(TAG, name);
+        exit(uri.getPathSegments().get(1));
     }
 
-//    private void cancel() {
-//        int id = ((ViewGroup)getView().getParent()).getId();
-//        Log.v(TAG, "" + id);
-//        if (id == R.id.container) {
-//            //If in portrait. Replace self with the task list again
-//            Fragment fragment = TaskListFragment.newInstance();
-//            getFragmentManager().beginTransaction().replace(R.id.container, fragment, "TaskListFragment").commit();
-//        } else if (id == R.id.right_pane) {
-//            //If in landscape. Reset the fields.
-//            EditText titleField = (EditText)getView().findViewById(R.id.input_title);
-//            titleField.setText("");
-//            EditText detailField = (EditText)getView().findViewById(R.id.input_detail);
-//            detailField.setText("");
-//            deadline = Calendar.getInstance();
-//            initializeDatePicker(getView());
-//        }
-//    }
+    private void exit(String newId) {
+        int id = ((ViewGroup)getView().getParent()).getId();
+        Fragment fragment;
+        fragment = DetailFragment.newInstance(newId);
+        if (id == R.id.container) {
+            //If in portrait. Replace self with the task list again
+            getFragmentManager().beginTransaction().replace(R.id.container, fragment, "DetailFragment").commit();
+        } else if (id == R.id.right_pane) {
+            //If in landscape. Reset the fields.
+            getFragmentManager().beginTransaction().replace(R.id.right_pane, fragment, "DetailFragment").commit();
+        }
+    }
 
 
 
