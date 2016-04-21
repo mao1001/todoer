@@ -18,11 +18,15 @@
     <string name="button_cancel_label">Cancel</string>
     <string name="button_delete_task_label">Delete</string>
     <string name="button_complete_task_label">Complete</string>
+    <string name="button_un_complete_task_label">Un-complete</string>
 
     <string name="title_hint">Title</string>
     <string name="detail_hint">Details</string>
 
+    <string name="status_created_label">Created on:</string>
     <string name="status_due_label">Due on:</string>
     <string name="status_completed_label">Completed on:</string>
     <string name="status_incomplete">Not yet completed</string>
+
+    <string name="toast_created_task">New task created</string>
 </resources>

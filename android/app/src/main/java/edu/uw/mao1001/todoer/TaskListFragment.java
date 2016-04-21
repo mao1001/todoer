@@ -18,6 +18,9 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import edu.uw.todoer.provider.TodoItem;
 import edu.uw.todoer.provider.TodoListProvider;
 
@@ -82,9 +85,17 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
                     TextView titleView = (TextView)view.findViewById(R.id.list_title);
                     titleView.setText(cursor.getString(columnIndex));
 
+
+
                     String statusText = cursor.getString(columnIndex + 3);
-                    //Log.v(TAG, cursor.getString(columnIndex + 2));
-                    //Log.v(TAG, cursor.getString(columnIndex + 3));
+
+                    //For some reason the created date going in is fine but coming out is the milisecond form.
+                    TextView createdLabel = (TextView)view.findViewById(R.id.list_created_label);
+                    Calendar test = Calendar.getInstance();
+                    Long omg = Long.parseLong(cursor.getString(columnIndex + 4));
+                    test.setTimeInMillis(omg);
+                    String wtf = TodoItem.getFormattedDate(test);
+                    createdLabel.setText(wtf);
 
                     TextView statusView = (TextView)view.findViewById(R.id.list_status);
                     if (statusText.equals("0")) {

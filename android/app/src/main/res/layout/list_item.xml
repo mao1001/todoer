@@ -37,6 +37,28 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/list_created"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_created_label"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/list_created_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder"
+            android:layout_weight="1"/>
+
+
+    </LinearLayout>
+
 
 
 </LinearLayout>

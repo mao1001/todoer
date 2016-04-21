@@ -3,6 +3,7 @@ package edu.uw.mao1001.todoer;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -16,11 +17,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.StringTokenizer;
+
 import edu.uw.todoer.provider.TodoItem;
 import edu.uw.todoer.provider.TodoListProvider;
 /**
@@ -30,8 +34,10 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
     private static final String TAG = "NewTaskFragment";
 
     private static TextView deadlineField;
+
+    private static String title;
+    private static String details;
     private static Calendar deadline;
-    private static Calendar completed;
     private static Calendar created;
 
     public NewTaskFragment() {
@@ -47,7 +53,9 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validate();
+                if (validate()) {
+                    saveTask();
+                }
             }
         });
 
@@ -57,27 +65,31 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         return rootView;
     }
 
-    private void validate() {
+    private boolean validate() {
         EditText titleField = (EditText)getView().findViewById(R.id.input_title);
-        String title = titleField.getText().toString();
+        title = titleField.getText().toString();
 
         EditText detailField = (EditText)getView().findViewById(R.id.input_detail);
-        String detail = detailField.getText().toString();
+        details = detailField.getText().toString();
 
-        if (detail.equals("") || title.equals("")) {
+        if (details.equals("") || title.equals("")) {
+            return false;
         } else {
-            saveTask(title, detail, TodoItem.getFormattedDate(deadline));
+            return true;
         }
     }
 
-    private void saveTask(String title, String detail, String deadline) {
+    private void saveTask() {
         ContentValues newValues = new ContentValues();
 
         created = Calendar.getInstance();
 
+        Log.v(TAG, "Deadline:" + TodoItem.getFormattedDate(deadline));
+        Log.v(TAG, "Created :" + TodoItem.getFormattedDate(created));
+
         newValues.put(TodoListProvider.TaskEntry.COL_TITLE, title);
-        newValues.put(TodoListProvider.TaskEntry.COL_DETAILS, detail);
-        newValues.put(TodoListProvider.TaskEntry.COL_DEADLINE, deadline);
+        newValues.put(TodoListProvider.TaskEntry.COL_DETAILS, details);
+        newValues.put(TodoListProvider.TaskEntry.COL_DEADLINE, TodoItem.getFormattedDate(deadline));
         newValues.put(TodoListProvider.TaskEntry.COL_TIME_CREATED, TodoItem.getFormattedDate(created));
 
 
@@ -85,6 +97,9 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
                 TodoListProvider.CONTENT_URI,
                 newValues
         );
+
+        Context context = getContext();
+        Toast.makeText(context, context.getString(R.string.toast_created_task), Toast.LENGTH_SHORT).show();
 
         exit(uri.getPathSegments().get(1));
     }

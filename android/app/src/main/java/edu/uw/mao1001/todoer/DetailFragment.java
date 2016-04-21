@@ -64,11 +64,21 @@ public class DetailFragment extends Fragment {
     }
 
     private void initializeButtons(View rootView) {
-        Button complete = (Button)rootView.findViewById(R.id.complete_button);
+        final Button complete = (Button)rootView.findViewById(R.id.complete_button);
+
+        if (!completed.equals("0")) {
+            Button btn = (Button)rootView.findViewById(R.id.complete_button);
+            btn.setHint(R.string.button_un_complete_task_label);
+        }
+
         complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                completeTask();
+                if (completed.equals("0")) {
+                    completeTask();
+                } else {
+                    unCompleteTask();
+                }
             }
         });
 
@@ -103,11 +113,31 @@ public class DetailFragment extends Fragment {
                     null
             );
 
+            Button btn = (Button)getView().findViewById(R.id.complete_button);
             TextView completedLabel = (TextView)getView().findViewById(R.id.detail_completed);
+            btn.setHint(R.string.button_un_complete_task_label);
+
             completedLabel.setText(completed);
         }
+    }
 
-        exit();
+    private void unCompleteTask() {
+        if (!completed.equals("0")) {
+            this.completed = "0";
+            ContentValues values = new ContentValues();
+            values.put(TodoItem.COMPLETED, "0");
+            getActivity().getContentResolver().update(
+                    TodoListProvider.CONTENT_URI,
+                    values,
+                    TodoItem.ID + "=" + ID,
+                    null
+            );
+
+            Button btn = (Button)getView().findViewById(R.id.complete_button);
+            TextView completedLabel = (TextView)getView().findViewById(R.id.detail_completed);
+            btn.setHint(R.string.button_complete_task_label);
+            completedLabel.setText(getString(R.string.status_incomplete));
+        }
     }
 
     private void exit() {
