@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        landscape = findViewById(R.id.right_pane) != null;
         loadTaskList(null);
-
     }
 
     @Override
@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     //   P R I V A T E   M E T H O D S   //
     //-----------------------------------//
 
+    /**
+     * Moves the user to a view to create a new task
+     */
     private void launchNewTask() {
         int targetId;
         if (landscape) {
@@ -80,9 +83,28 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    /**
+     * Loads the appropriate fragments
+     * If we are in landscape, load two fragments.
+     * @param options
+     */
     private void loadTaskList(Bundle options) {
-        //Attempts to find right_pane
-        landscape = findViewById(R.id.right_pane) != null;
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        //Find the id to figure out where to put the task list panel
+        int targetId;
+        if (landscape) {
+            //We are in landscape
+            //Create right pane with new task view
+            Fragment rightFragment = new NewTaskFragment();
+            ft.replace(R.id.right_pane, rightFragment, "NewTaskFragment");
+
+            targetId = R.id.left_pane;
+        } else {
+            targetId = R.id.container;
+        }
+
+        //Initialize the task list panel
         Fragment fragment;
         if (options != null) {
             fragment = TaskListFragment.newInstance(
@@ -94,28 +116,15 @@ public class MainActivity extends AppCompatActivity {
             fragment = TaskListFragment.newInstance(this);
         }
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-        int targetId;
-        if (landscape) {
-            //We are in landscape
-            Fragment rightFragment = new NewTaskFragment();
-
-            targetId = R.id.left_pane;
-
-            ft.replace(R.id.right_pane, rightFragment, "NewTaskFragment");
-        } else {
-            targetId = R.id.container;
-        }
-
-        Log.v(TAG, "" + targetId);
-
-        //Instantiate the main task list.
-
         ft.replace(targetId, fragment, "TaskListFragment");
         ft.commit();
     }
 
+    /**
+     * Sorts the data in this fragment by the clause passed in
+     * The string should be a SQL GROUP BY clause sans 'GROUP BY'
+     * @param orderBy
+     */
     private void resortData(String orderBy) {
         TaskListFragment fragment = ((TaskListFragment)getSupportFragmentManager().findFragmentByTag("TaskListFragment"));
         fragment.reloadDate(orderBy);
