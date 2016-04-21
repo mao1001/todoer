@@ -200,7 +200,7 @@ public class DetailFragment extends Fragment {
         Button btn = (Button)getView().findViewById(R.id.complete_button);
         TextView completedLabel = (TextView)getView().findViewById(R.id.detail_completed);
         if (completed.equals("0")) {
-            this.completed = TodoItem.getFormattedDate(Calendar.getInstance());
+            this.completed = TodoItem.getFormmatedFullDate(Calendar.getInstance());
             btn.setHint(R.string.button_un_complete_task_label);
             completedLabel.setText(completed);
         } else {

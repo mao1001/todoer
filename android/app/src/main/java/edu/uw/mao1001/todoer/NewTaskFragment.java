@@ -2,6 +2,7 @@ package edu.uw.mao1001.todoer;
 
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import java.util.Calendar;
 
@@ -24,10 +26,11 @@ import edu.uw.todoer.provider.TodoListProvider;
 /**
  * Created by Nick on 4/19/2016.
  */
-public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDateSetListener {
+public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final String TAG = "NewTaskFragment";
 
     private static TextView deadlineField;
+    private static TextView timeField;
 
     private static String title;
     private static String details;
@@ -71,6 +74,13 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         deadlineField.setText(TodoItem.getFormattedDate(deadline));
     }
 
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        deadline.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        deadline.set(Calendar.MINUTE, minute);
+        timeField.setText(TodoItem.getFormmattedTime(deadline));
+    }
+
     //-----------------------------------//
     //   P R I V A T E   M E T H O D S   //
     //-----------------------------------//
@@ -100,7 +110,18 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = DatePickerFragment.newInstance(NewTaskFragment.this, NewTaskFragment.deadline);
-                newFragment.show(getActivity().getFragmentManager(), "datePicker");
+                newFragment.show(getActivity().getFragmentManager(), "DatePicker");
+            }
+        });
+
+        //Initializes time picker
+        timeField = (TextView)rootView.findViewById(R.id.input_time);
+        timeField.setText(TodoItem.getFormmattedTime(deadline));
+        timeField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = TimePickerFragment.newInstance(NewTaskFragment.this, NewTaskFragment.deadline);
+                newFragment.show(getActivity().getFragmentManager(), "TimePicker");
             }
         });
 
@@ -129,8 +150,8 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         ContentValues newValues = new ContentValues();
         newValues.put(TodoListProvider.TaskEntry.COL_TITLE, title);
         newValues.put(TodoListProvider.TaskEntry.COL_DETAILS, details);
-        newValues.put(TodoListProvider.TaskEntry.COL_DEADLINE, TodoItem.getFormattedDate(deadline));
-        newValues.put(TodoListProvider.TaskEntry.COL_TIME_CREATED, TodoItem.getFormattedDate(created));
+        newValues.put(TodoListProvider.TaskEntry.COL_DEADLINE, TodoItem.getFormmatedFullDate(deadline));
+        newValues.put(TodoListProvider.TaskEntry.COL_TIME_CREATED, TodoItem.getFormmatedFullDate(created));
 
         Uri uri = getActivity().getContentResolver().insert(
                 TodoListProvider.CONTENT_URI,

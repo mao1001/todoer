@@ -173,7 +173,7 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
                     Calendar test = Calendar.getInstance();
                     Long omg = Long.parseLong(cursor.getString(columnIndex + 4));
                     test.setTimeInMillis(omg);
-                    String wtf = TodoItem.getFormattedDate(test);
+                    String wtf = TodoItem.getFormmatedFullDate(test);
                     createdLabel.setText(wtf);
 
                     TextView statusView = (TextView)view.findViewById(R.id.list_status);

@@ -26,6 +26,7 @@
     <string name="status_created_label">Created on:</string>
     <string name="status_due_label">Due on:</string>
     <string name="status_completed_label">Completed on:</string>
+    <string name="status_time_label">Time:</string>
     <string name="status_incomplete">Not yet completed</string>
 
     <string name="toast_created_task">New task created</string>
