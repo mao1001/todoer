@@ -1,5 +1,6 @@
 package edu.uw.mao1001.todoer;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -27,9 +28,9 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final String TAG = "TaskListFragment";
 
-    String selection;
-    String orderBy;
-    String title;
+    private String title;
+    private String selection;
+    private String orderBy;
 
     private SimpleCursorAdapter adapter;
 
@@ -42,6 +43,14 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         fragment.selection = selection;
         fragment.orderBy = orderBy;
         fragment.title = title;
+        return fragment;
+    }
+
+    public static TaskListFragment newInstance(Context context) {
+        TaskListFragment fragment = new TaskListFragment();
+        fragment.selection = TodoItem.COMPLETED + "=0";
+        fragment.orderBy = TodoItem.DEADLINE + " DESC";
+        fragment.title = context.getString(R.string.title_todo);
         return fragment;
     }
 

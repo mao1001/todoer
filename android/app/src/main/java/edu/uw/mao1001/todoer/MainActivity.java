@@ -22,15 +22,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadTaskList(TodoItem.COMPLETED + "=0", TodoItem.DEADLINE + " DESC", getString(R.string.title_todo));
+        loadTaskList(null);
 
     }
 
-    private void loadTaskList(String selection, String orderBy, String title) {
+    private void loadTaskList(Bundle options) {
         //Attempts to find right_pane
         landscape = findViewById(R.id.right_pane) != null;
+        Fragment fragment;
+        if (options != null) {
+            fragment = TaskListFragment.newInstance(
+                    options.getString("selection"),
+                    options.getString("orderBy"),
+                    options.getString("title")
+            );
+        } else {
+            fragment = TaskListFragment.newInstance(this);
+        }
 
-        Fragment fragment = TaskListFragment.newInstance(selection, orderBy, title);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         int targetId;
@@ -64,10 +73,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.toString()) {
             case "Show Task List":
-                loadTaskList(TodoItem.COMPLETED + "=0", TodoItem.DEADLINE + " DESC", getString(R.string.title_todo));
+                loadTaskList(null);
                 break;
             case "Show Completed":
-                loadTaskList(TodoItem.COMPLETED + "!=0", TodoItem.DEADLINE + " DESC", getString(R.string.title_completed));
+                Bundle options = new Bundle();
+                options.putString("selection", TodoItem.COMPLETED + "!=0");
+                options.putString("orderBy", TodoItem.DEADLINE + " DESC");
+                options.putString("title", getString(R.string.title_completed));
+                loadTaskList(options);
                 break;
             case "New Task":
                 launchNewTask();

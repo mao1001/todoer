@@ -115,10 +115,10 @@ public class DetailFragment extends Fragment {
         Log.v(TAG, "" + id);
         if (id == R.id.container) {
             //If in portrait. Replace self with the task list again
-            Fragment fragment = TaskListFragment.newInstance(TodoItem.COMPLETED + "=0", TodoItem.DEADLINE + " DESC", getString(R.string.title_todo));
+            Fragment fragment = TaskListFragment.newInstance(getContext());
             getFragmentManager().beginTransaction().replace(R.id.container, fragment, "TaskListFragment").commit();
         } else if (id == R.id.right_pane) {
-            Fragment fragment = TaskListFragment.newInstance(TodoItem.COMPLETED + "=0", TodoItem.DEADLINE + " DESC", getString(R.string.title_todo));
+            Fragment fragment = TaskListFragment.newInstance(getContext());
             getFragmentManager().beginTransaction().replace(R.id.right_pane, fragment, "TaskListFragment").commit();
         }
     }

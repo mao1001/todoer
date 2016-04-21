@@ -51,13 +51,13 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
             }
         });
 
-        Button btn2 = (Button)rootView.findViewById(R.id.cancel_button);
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancel();
-            }
-        });
+//        Button btn2 = (Button)rootView.findViewById(R.id.cancel_button);
+//        btn2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                cancel();
+//            }
+//        });
 
 
         deadline = Calendar.getInstance();
@@ -100,7 +100,7 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         );
         Log.d(TAG, "Item inserted");
 
-        cancel();
+        //cancel();
 
 //
 //        String[] projection = {TodoListProvider.TaskEntry.COL_TITLE, TodoListProvider.TaskEntry.COL_DETAILS};
@@ -114,23 +114,23 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
 //        Log.d(TAG, name);
     }
 
-    private void cancel() {
-        int id = ((ViewGroup)getView().getParent()).getId();
-        Log.v(TAG, "" + id);
-        if (id == R.id.container) {
-            //If in portrait. Replace self with the task list again
-            Fragment fragment = TaskListFragment.newInstance(TodoItem.COMPLETED + "=0", TodoItem.DEADLINE + " DESC", getString(R.string.title_todo));
-            getFragmentManager().beginTransaction().replace(R.id.container, fragment, "TaskListFragment").commit();
-        } else if (id == R.id.right_pane) {
-            //If in landscape. Reset the fields.
-            EditText titleField = (EditText)getView().findViewById(R.id.input_title);
-            titleField.setText("");
-            EditText detailField = (EditText)getView().findViewById(R.id.input_detail);
-            detailField.setText("");
-            deadline = Calendar.getInstance();
-            initializeDatePicker(getView());
-        }
-    }
+//    private void cancel() {
+//        int id = ((ViewGroup)getView().getParent()).getId();
+//        Log.v(TAG, "" + id);
+//        if (id == R.id.container) {
+//            //If in portrait. Replace self with the task list again
+//            Fragment fragment = TaskListFragment.newInstance();
+//            getFragmentManager().beginTransaction().replace(R.id.container, fragment, "TaskListFragment").commit();
+//        } else if (id == R.id.right_pane) {
+//            //If in landscape. Reset the fields.
+//            EditText titleField = (EditText)getView().findViewById(R.id.input_title);
+//            titleField.setText("");
+//            EditText detailField = (EditText)getView().findViewById(R.id.input_detail);
+//            detailField.setText("");
+//            deadline = Calendar.getInstance();
+//            initializeDatePicker(getView());
+//        }
+//    }
 
 
 
