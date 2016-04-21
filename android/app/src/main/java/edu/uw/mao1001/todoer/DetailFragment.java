@@ -22,11 +22,11 @@ public class DetailFragment extends Fragment {
 
     private static final String TAG = "DetailFragment";
 
+    private String ID;
     private String title;
     private String details;
     private String deadline;
     private String completed;
-    private String ID;
 
     //-----------------------------//
     //   C O N S T R U C T O R S   //
@@ -68,6 +68,10 @@ public class DetailFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Required!!! This view will crash without an ID.
+     * @param outState
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("id", ID);

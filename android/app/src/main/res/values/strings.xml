@@ -29,4 +29,5 @@
     <string name="status_incomplete">Not yet completed</string>
 
     <string name="toast_created_task">New task created</string>
+    <string name="toast_empty_fields">Fields cannot be empty</string>
 </resources>
