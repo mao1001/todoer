@@ -4,10 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,12 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.StringTokenizer;
 
 import edu.uw.todoer.provider.TodoItem;
 import edu.uw.todoer.provider.TodoListProvider;
@@ -40,9 +33,18 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
     private static Calendar deadline;
     private static Calendar created;
 
-    public NewTaskFragment() {
-        //Required constructor
-    }
+    //-----------------------------//
+    //   C O N S T R U C T O R S   //
+    //-----------------------------//
+
+    /**
+     * Required blank constructor
+     */
+    public NewTaskFragment() {}
+
+    //-----------------------------------------//
+    //   F R A G M E N T   O V E R R I D E S   //
+    //-----------------------------------------//
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,18 +67,41 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         return rootView;
     }
 
-    private boolean validate() {
-        EditText titleField = (EditText)getView().findViewById(R.id.input_title);
-        title = titleField.getText().toString();
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        deadline.set(year, monthOfYear, dayOfMonth);
+        deadlineField.setText(TodoItem.getFormattedDate(deadline));
+    }
 
-        EditText detailField = (EditText)getView().findViewById(R.id.input_detail);
-        details = detailField.getText().toString();
+    //-----------------------------------//
+    //   P R I V A T E   M E T H O D S   //
+    //-----------------------------------//
 
-        if (details.equals("") || title.equals("")) {
-            return false;
-        } else {
-            return true;
+    private void exit(String newId) {
+        int id = ((ViewGroup)getView().getParent()).getId();
+        Fragment fragment;
+        fragment = DetailFragment.newInstance(newId);
+        if (id == R.id.container) {
+            //If in portrait. Replace self with the task list again
+            getFragmentManager().beginTransaction().replace(R.id.container, fragment, "DetailFragment").commit();
+        } else if (id == R.id.right_pane) {
+            //If in landscape. Reset the fields.
+            getFragmentManager().beginTransaction().replace(R.id.right_pane, fragment, "DetailFragment").commit();
         }
+    }
+
+    private void initializeDatePicker(View rootView) {
+        deadlineField = (TextView)rootView.findViewById(R.id.input_deadline);
+
+        deadlineField.setText(TodoItem.getFormattedDate(deadline));
+
+        deadlineField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = DatePickerFragment.newInstance(NewTaskFragment.this, NewTaskFragment.deadline);
+                newFragment.show(getActivity().getFragmentManager(), "datePicker");
+            }
+        });
     }
 
     private void saveTask() {
@@ -104,40 +129,18 @@ public class NewTaskFragment extends Fragment  implements DatePickerDialog.OnDat
         exit(uri.getPathSegments().get(1));
     }
 
-    private void exit(String newId) {
-        int id = ((ViewGroup)getView().getParent()).getId();
-        Fragment fragment;
-        fragment = DetailFragment.newInstance(newId);
-        if (id == R.id.container) {
-            //If in portrait. Replace self with the task list again
-            getFragmentManager().beginTransaction().replace(R.id.container, fragment, "DetailFragment").commit();
-        } else if (id == R.id.right_pane) {
-            //If in landscape. Reset the fields.
-            getFragmentManager().beginTransaction().replace(R.id.right_pane, fragment, "DetailFragment").commit();
+    private boolean validate() {
+        EditText titleField = (EditText)getView().findViewById(R.id.input_title);
+        title = titleField.getText().toString();
+
+        EditText detailField = (EditText)getView().findViewById(R.id.input_detail);
+        details = detailField.getText().toString();
+
+        if (details.equals("") || title.equals("")) {
+            return false;
+        } else {
+            return true;
         }
-    }
-
-
-
-    private void initializeDatePicker(View rootView) {
-        deadlineField = (TextView)rootView.findViewById(R.id.input_deadline);
-
-        deadlineField.setText(TodoItem.getFormattedDate(deadline));
-
-        deadlineField.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = DatePickerFragment.newInstance(NewTaskFragment.this, NewTaskFragment.deadline);
-                newFragment.show(getActivity().getFragmentManager(), "datePicker");
-            }
-        });
-    }
-
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        deadline.set(year, monthOfYear, dayOfMonth);
-        deadlineField.setText(TodoItem.getFormattedDate(deadline));
     }
 }
 

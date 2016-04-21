@@ -15,12 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import edu.uw.todoer.provider.TodoItem;
 import edu.uw.todoer.provider.TodoListProvider;
 
@@ -34,8 +29,11 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
     private String title;
     private String selection;
     private String orderBy;
-
     private SimpleCursorAdapter adapter;
+
+    //-----------------------------//
+    //   C O N S T R U C T O R S   //
+    //-----------------------------//
 
     public TaskListFragment() {
         //Required blank constructor
@@ -57,6 +55,9 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         return fragment;
     }
 
+    //-----------------------------------------//
+    //   F R A G M E N T   O V E R R I D E S   //
+    //-----------------------------------------//
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,12 +81,8 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 if (columnIndex == cursor.getColumnIndex(TodoItem.TITLE)) {
 
-                    //Log.v(TAG, "This is ID: " + cursor.getString(columnIndex - 1));
-
                     TextView titleView = (TextView)view.findViewById(R.id.list_title);
                     titleView.setText(cursor.getString(columnIndex));
-
-
 
                     String statusText = cursor.getString(columnIndex + 3);
 
@@ -130,10 +127,18 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         return rootView;
     }
 
+    //---------------------------------//
+    //   P U B L I C   M E T H O D S   //
+    //---------------------------------//
+
     public void reloadDate(String orderBy) {
         this.orderBy = orderBy;
         getLoaderManager().restartLoader(0, null, this);
     }
+
+    //-----------------------------------//
+    //   P R I V A T E   M E T H O D S   //
+    //-----------------------------------//
 
     private void moveToDetailView(String id) {
         int parentId = ((ViewGroup)getView().getParent()).getId();

@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +16,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static boolean landscape;
 
+    //-----------------------//
+    //   O V E R R I D E S   //
+    //-----------------------//
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,57 @@ public class MainActivity extends AppCompatActivity {
 
         loadTaskList(null);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.task_list_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.toString()) {
+            case "Show Task List":
+                loadTaskList(null);
+                break;
+            case "Show Completed":
+                Bundle options = new Bundle();
+                options.putString("selection", TodoItem.COMPLETED + "!=0");
+                options.putString("orderBy", TodoItem.DEADLINE + " DESC");
+                options.putString("title", getString(R.string.title_completed));
+                loadTaskList(options);
+                break;
+            case "New Task":
+                launchNewTask();
+                break;
+            case "By create date":
+                resortData(TodoItem.TIME_CREATED + " ASC");
+                break;
+            case "By due date":
+                resortData(TodoItem.DEADLINE + " DESC");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //-----------------------------------//
+    //   P R I V A T E   M E T H O D S   //
+    //-----------------------------------//
+
+    private void launchNewTask() {
+        int targetId;
+        if (landscape) {
+            targetId = R.id.right_pane;
+        } else {
+            targetId = R.id.container;
+        }
+
+        Fragment fragment = new NewTaskFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(targetId, fragment, "NewTaskFragment");
+        ft.commit();
     }
 
     private void loadTaskList(Bundle options) {
@@ -62,56 +116,9 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.task_list_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.toString()) {
-            case "Show Task List":
-                loadTaskList(null);
-                break;
-            case "Show Completed":
-                Bundle options = new Bundle();
-                options.putString("selection", TodoItem.COMPLETED + "!=0");
-                options.putString("orderBy", TodoItem.DEADLINE + " DESC");
-                options.putString("title", getString(R.string.title_completed));
-                loadTaskList(options);
-                break;
-            case "New Task":
-                launchNewTask();
-                break;
-            case "By create date":
-                resortData(TodoItem.TIME_CREATED + " ASC");
-                break;
-            case "By due date":
-                resortData(TodoItem.DEADLINE + " DESC");
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void resortData(String orderBy) {
         TaskListFragment fragment = ((TaskListFragment)getSupportFragmentManager().findFragmentByTag("TaskListFragment"));
         fragment.reloadDate(orderBy);
-    }
-
-    private void launchNewTask() {
-        int targetId;
-        if (landscape) {
-            targetId = R.id.right_pane;
-        } else {
-            targetId = R.id.container;
-        }
-
-        Fragment fragment = new NewTaskFragment();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(targetId, fragment, "NewTaskFragment");
-        ft.commit();
     }
 }
 
