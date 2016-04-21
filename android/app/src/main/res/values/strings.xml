@@ -3,6 +3,11 @@
 
     <string name="placeholder">Placeholder</string>
 
+    <string name="title_todo">To-do List</string>
+    <string name="title_completed">Completed Tasks</string>
+
+    <string name="action_show_task_list_label">Show Task List</string>
+    <string name="action_show_completed_label">Show Completed</string>
     <string name="action_new_task_label">New Task</string>
     <string name="action_sort_label">Sort</string>
 

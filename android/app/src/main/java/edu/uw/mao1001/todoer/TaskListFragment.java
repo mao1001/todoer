@@ -27,7 +27,9 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final String TAG = "TaskListFragment";
 
+    String selection;
     String orderBy;
+    String title;
 
     private SimpleCursorAdapter adapter;
 
@@ -35,9 +37,11 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
         //Required blank constructor
     }
 
-    public static TaskListFragment newInstance(String orderBy) {
+    public static TaskListFragment newInstance(String selection, String orderBy, String title) {
         TaskListFragment fragment = new TaskListFragment();
+        fragment.selection = selection;
         fragment.orderBy = orderBy;
+        fragment.title = title;
         return fragment;
     }
 
@@ -46,7 +50,7 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_task_list, container, false);
 
-        getActivity().setTitle("Task List");
+        getActivity().setTitle(title);
 
         //controller
         AdapterView listView = (AdapterView)rootView.findViewById(R.id.taskListView);
@@ -147,7 +151,7 @@ public class TaskListFragment extends Fragment implements LoaderManager.LoaderCa
                 getActivity(),
                 TodoListProvider.CONTENT_URI,
                 projection,
-                null,
+                selection,
                 null,
                 orderBy
         );

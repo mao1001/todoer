@@ -22,10 +22,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        loadTaskList(TodoItem.COMPLETED + "=0", TodoItem.DEADLINE + " DESC", getString(R.string.title_todo));
+
+    }
+
+    private void loadTaskList(String selection, String orderBy, String title) {
         //Attempts to find right_pane
         landscape = findViewById(R.id.right_pane) != null;
 
-        Fragment fragment = TaskListFragment.newInstance("");
+        Fragment fragment = TaskListFragment.newInstance(selection, orderBy, title);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         int targetId;
@@ -58,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.toString()) {
+            case "Show Task List":
+                loadTaskList(TodoItem.COMPLETED + "=0", TodoItem.DEADLINE + " DESC", getString(R.string.title_todo));
+                break;
+            case "Show Completed":
+                loadTaskList(TodoItem.COMPLETED + "!=0", TodoItem.DEADLINE + " DESC", getString(R.string.title_completed));
+                break;
             case "New Task":
                 launchNewTask();
                 break;
